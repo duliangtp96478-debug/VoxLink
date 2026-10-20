@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.20)
+project(VoxLinkCore LANGUAGES CXX)
+# Bundle the MSVC CRT into the core executable for portable deployment.
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+add_executable(VoxLinkCore WIN32 VoxLinkCore.cpp)
+target_compile_features(VoxLinkCore PRIVATE cxx_std_20)
+target_compile_definitions(VoxLinkCore PRIVATE UNICODE _UNICODE NOMINMAX)
+target_link_libraries(VoxLinkCore PRIVATE ws2_32 ole32 uuid)
+if(MSVC)
+  target_compile_options(VoxLinkCore PRIVATE /O2 /EHsc /W3)
+endif()

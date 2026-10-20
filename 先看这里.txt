@@ -1,0 +1,25 @@
+VoxLink 1.0.1 Stable 构建工程 — 集成已在公司验证的Fix7引擎保护
+
+推荐：家里双击 Build_Stable.cmd。使用已安装的 Flutter 3.47.6 + Visual Studio/CMake，不修改全局SDK。成功后取 Release\VoxLink_Stable_Portable.zip，解压并复制完整 Portable 文件夹到公司。公司直接运行 VoxLink.exe，无需安装编译环境，也不用再手工安装补丁。
+首次构建后若重新构建，先把 Release\VoxLink_Stable_Portable 改名留存，脚本不会删除现有稳定包。
+
+现在不想回家编译：双击 Export_Existing_Stable.cmd，粘贴已经正常运行的 A版+Fix7 Portable 文件夹路径。它只读取原目录，在本工程 Release 下输出精简目录，原文件夹不动。此方式沿用已测试EXE（内部版本仍1.0.0.100），不等于重新构建1.0.1；会保留原EXE的诊断写入行为，不过日志不会放在Portable目录里。
+
+便携目录只保留：
+- VoxLink.exe / VoxLinkCore.exe
+- 集成Fix7的flutter_windows.dll
+- screen_retriever / tray_manager / window_manager等实际生成的插件DLL
+- 3个x64 MSVC运行库DLL（它们是运行组件，不是编译环境）
+- data文件夹（Flutter字体、图标、UI资产与编译代码，不能删除）
+基于你上传的A版清单，预计顶层10项：2个EXE、4个引擎/插件DLL、3个VC运行库DLL、1个data文件夹。精确计数以构建脚本打印为准。
+
+不再往Portable塞入：Fix7安装/回退脚本、备用DLL、源码、图标副本、版本诊断TXT、日志收集器、runner源码和pubspec记录。
+许可证位于发布ZIP的外层；构建记录在Release\BuildInfo，不在Portable。图标仍包含在EXE和data资产里，托盘不依赖额外的app_icon.ico。
+正式源码日志已禁用，不再后台写Fix6滚轮/缩放诊断日志。保留原Flutter深色界面、托盘、单实例、音频核心、滑杆、EQ、降噪和静音。
+
+修复集成方式和边界：
+构建脚本严格验证原引擎哈希，自动将已验证的Fix7引擎写入最终发布目录；没有额外应用补丁步骤。修复本身仍是针对精确引擎的空父指针保护，不是声称上游无障碍语义树初始化缺陷已完全修好。未关闭无障碍支持。
+锁定Flutter3.47.6和你A版的pubspec.lock，避免无提示升级依赖/混用新引擎。未来升级SDK必须重新验证引擎修复。
+“Stable”作为本项目的发布命名与公司实测基础，不表示所有Windows电脑都已验证，也不表示读屏树一致性已完整修复。
+已完成：源代码和集成哈希检查、精简目录筛选验证；Fix7已由你确认公司缩放/最大化正常。
+未完成：此工程在本环境无法编译Windows；重编译后的1.0.1 EXE仍需家里/公司各验一次手机音频、滚动、缩放和最大化。不能提供尚未生成的完整EXE便携包。
